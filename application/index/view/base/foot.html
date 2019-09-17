@@ -1,0 +1,41 @@
+<div class="weui-footer" style="margin-bottom: 2.7rem;margin-top: .8rem">
+  <!--
+  <p class="weui-footer__text">{$webconfig.title} Copyright © {$webconfig.copyright}<br>
+备案号：豫ICP备17051046</p>
+-->
+    <p class="weui-footer__text">qq：{$webconfig.qq} </p>
+      <p class="weui-footer__text">客服电话：{$webconfig.phone} </p>
+</div>
+<div class="weui-tab tab-bottom " style="height:2.7rem;" data-now="0">
+	<div class="weui-tabbar">
+		<a href="{:url('index/index')}" class="weui-tabbar__item"  >
+			<i class="icon icon-27 f27 weui-tabbar__icon"></i>
+			<p class="weui-tabbar__label">首页</p>
+		</a>
+		<a href="{:url('index/search')}" class="weui-tabbar__item" >
+			<i class="icon icon-80 f27 weui-tabbar__icon"></i>
+			<p class="weui-tabbar__label">信息</p>
+		</a>
+      {if isset( $information)}
+      {if $information['view_subscribe'] eq 1  || $information['view_voluntarily'] eq 1 }
+		<a href="{:url('index/correct_errors')}" class="weui-tabbar__item" >
+        
+            <i class="icon icon-4 f27 weui-tabbar__icon"></i>
+            <p class="weui-tabbar__label">勘误</p>
+        </a>
+        {/if}
+      {/if}
+        <a href="{:url('user/index')}" class="weui-tabbar__item ">
+        	<i class="icon icon-99 f27 weui-tabbar__icon" ></i>
+        	<p class="weui-tabbar__label">个人中心</p> <!--  f-green> -->
+        </a>
+    </div>
+</div>
+<script>
+	$(function(){
+   
+		$('.weui-tabbar__item:eq({$check})').addClass('weui-bar__item_on');
+	})
+</script>
+</body>
+</html>

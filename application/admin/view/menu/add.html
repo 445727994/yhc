@@ -1,0 +1,101 @@
+{include file="base/addhead"/}
+<div class="layui-form-item">
+<label class="layui-form-label">网页标题</label>
+<div class="layui-input-block">
+<input type="input" name="title" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">模块</label>
+<div class="layui-input-block">
+<input type="input" name="module" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">控制器</label>
+<div class="layui-input-block">
+<input type="input" name="controller" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">方法</label>
+<div class="layui-input-block">
+<input type="input" name="action" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">参数</label>
+<div class="layui-input-block">
+<input type="input" name="param" class="layui-input" lay-verify=""  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">上级分类</label>
+<div class="layui-input-block">
+<select name="pid" lay-verify="" >
+</select>
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">是否显示菜单</label>
+<div class="layui-input-block">
+<input type="checkbox" lay-skin="switch" lay-text="否|是" name="is_menu" value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">图标class</label>
+<div class="layui-input-block">
+<input type="input" name="icon" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<!--固定提交button -->
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="add" lay-filter="add">立即提交</button>
+        <a href="{:url('index')}"><button type="button"  class="layui-btn layui-btn-primary">返回</button></a>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form,
+        layer = layui.layer,
+        layedit = layui.layedit
+        //创建一个编辑器    
+        //自定义验证规则
+        form.verify({
+            title: function(value) {
+                if(value=="") {
+                    return '页面title不能为空';
+                }
+            },
+            url: function(value) {
+                if(value=="") {
+                    return 'url路径不能为空';
+                }
+            },
+            //!$verify!  验证部分  做好替换即可
+            //!$post! 提交部分  做好替换即可
+            //!$tablfiled! 列表部分 做好
+        });
+        //监听提交 固定提交部分  编辑修改用
+        form.on('submit(add)', function(data) {
+            ajaxYhc('POST','{:url("add")}',data.field,
+                function(result){
+                    console.log(result);
+                    if(result.code==0){
+                        layer.msg(result.msg);
+                        setTimeout('location.href="{:url(\'index\')}";',1500);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                    ;
+                },
+                function(result){
+                    console.log(result);
+                    layer.msg(result.msg);
+                });
+            return false;
+        });
+    });
+</script>
+{include file="base/addfoot"/}

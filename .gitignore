@@ -1,0 +1,13 @@
+runtime/
+*.tar.gz
+*.zip
+*.txt
+/config/databases.php
+*.log
+*.ico
+vendor/
+thinkphp/
+public/upload/
+public/excels/
+public/schoolimg/
+public/log/

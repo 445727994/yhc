@@ -1,0 +1,96 @@
+{include file="base/head"/}
+<style type="text/css">
+.user{
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    background: url('/static/head-bg.png');
+    background-size:100%,100%;
+    position: relative;a
+}
+.userImg{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 25px;
+    left: 30px;
+}
+.userImg img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+}
+.ueseText {
+    margin-left: 150px;
+    margin-top: 40px;
+    color: #fff;
+}
+</style>
+
+<div class="weui-navbar">
+	<div class="weui-navbar__item">
+		{$title}
+	</div>
+</div>
+<div class="page page-bd">
+    <div class="user">
+        <div class="userImg"><img src="{$user.head_img}"></div>
+        <div class="ueseText">
+            <h3>{$user.wx_user}<span></h3>
+            <p></p>
+        </div>
+    </div>
+
+
+
+    <div class=" weui-cells_form">
+       <div class="weui-grids">
+        <!--
+    <a href="javascript:;" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+            <img src="__WEUI__/images/icon_nav_button.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+           自行补拍
+        </p>
+    </a>
+    <a href="javascript:;" class="weui-grid js_grid">
+        <div class="weui-grid__icon">
+            <img src="__WEUI__/images/icon_nav_icons.png" alt="">
+        </div>
+        <p class="weui-grid__label">
+           预约补拍
+        </p>
+    </a>
+-->
+<a href="{:url('user/classsort')}" class="weui-grid js_grid">
+    <div class="weui-grid__icon">
+        <img src="__WEUI__/images/icon_nav_article.png" alt="">
+    </div>
+    <p class="weui-grid__label">
+        班级名单
+    </p>
+</a>
+<a href="{:url('user/other')}" class="weui-grid js_grid">
+    <div class="weui-grid__icon">
+        <img src="__WEUI__/images/icon_nav_panel.png" alt="">
+    </div>
+    <p class="weui-grid__label">
+        其他说明
+    </p>
+</a>
+<a href="{:url('user/about_us')}" class="weui-grid js_grid">
+    <div class="weui-grid__icon">
+        <img src="__WEUI__/images/user.png" alt="">
+    </div>
+    <p class="weui-grid__label">
+        关于我们
+    </p>
+</a>
+</div>
+</div>
+</div>
+
+
+
+{include file="base/foot"/}

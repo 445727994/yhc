@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>微信安全支付</title>
+    <link rel="stylesheet" href="__WEUI__/css/weui.css"/>
+      <link rel="stylesheet" href="__WEUI__/css/weui.css"/>
+    <link rel="stylesheet" href="__WEUI__/css/weuix.css"/>
+    <script src="__WEUI__/js/zepto.min.js"></script>
+    <script src="__WEUI__/js/zepto.weui.js"></script>
+    <script type="text/javascript" src="__STA__/ajaxweui.js"></script>
+   <script type="text/javascript">
+	function okAjax(out_trade_no,ext){
+	     $.ajax({
+            type:"post",
+            url:"{:url('status')}",
+            data:{oid:out_trade_no,ext:ext},
+            dataType:"text",
+            success:function(data){
+              if(data==1){
+                 alert('支付成功');
+                window.location.href="{:url('index')}";
+              }
+            },
+            async:false
+          });
+	}
+	//调用微信JS api 支付
+	function jsApiCall()
+	{
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',
+                {$jsApiParameters|raw},
+			function(res){
+			    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+			    	okAjax('{$order_no}','{$order_no}');
+			    }else{
+			        WeixinJSBridge.log(res.err_msg);
+			         // alert('{$order_no}');
+					 alert('支付失败！');
+				 }
+			}
+		);
+	}
+	function callpay()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	}
+
+	</script>
+</head>
+ <body ontouchstart>
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<div class="page page-bd" style='margin-top:1rem;'>
+    <div class="weui-msg"  id="s2">
+        <div class="weui-msg__icon-area"><i class="weui-icon-waiting weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+          
+            <p class="weui-msg__desc">{$msg|raw}		<br>	请您先进行支付才可查看信息，此平台只有一次收费环节</p>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+               
+                 <a href="javascript:;" onclick="callpay()" class="weui-btn weui-btn_primary">去支付</a>
+      <a href="javascript:;"  class="weui-btn weui-btn_warn cancel">取消支付(取消补拍、预约信息)</a>
+               <!-- <a href="javascript:;" class="weui-btn weui-btn_default">辅助操作</a>-->
+            </p>
+        </div>
+        <div class="weui-msg__extra-area">
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+    $(document).on("click",".cancel",function(){   
+    $.confirm("确定取消吗?", "确认?", function() {
+        ajaxYhc('POST','{:url("delete_pay")}',{},
+            function(result){
+               $.alert(result.msg,"{$webconfig['title']}",function(){
+                window.location.href="{:url('index')}";
+            });
+           },
+           function(result){
+            $.toast(result.msg,'text');
+        });
+        return false;
+    }, function() {
+
+    });
+})
+</script>

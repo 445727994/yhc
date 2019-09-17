@@ -1,0 +1,150 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<div class="page page-bd">
+    <div class=" weui-cells_form">
+        <div class="weui-cell  yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">院校名称：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院校名称"  value="{$user.schoolname}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">院校代码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院校代码"  value="{$user.schoolcode}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle" >
+            <div class="weui-cell__hd"><label class="weui-label">院(系)部：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院(系)部" value='{$user.departmentname}' >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">班级：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="班级" value="{$user.class}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">姓名：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="姓名" value="{$user.user_name}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">性别：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="性别" value="{$user.sex=1?'男':'女'}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">身份证号码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="身份证号码" value="{$user.usercard}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">学号：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="学号"  value="{$user.study_id}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">学历层次：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="学历层次" value="{$user.study_level}" >
+            </div>
+        </div>
+        <div class="weui-btn-area" style="margin-top: 0rem">
+            <a class="weui-btn weui-btn_primary weui-btn_warn patting" data-id='1' href="javascript:">自行补拍</a>  
+            <a class="weui-btn weui-btn_primary weui-btn_warn patting" data-id='2'  href="javascript:" >预约补拍</a>
+        </div>
+
+    </div>
+</div>
+<style type="text/css">
+
+.img-right{
+    line-height: 1.9rem;
+}
+.yhc_middle{
+    width: 60%;
+    min-width: 286px;
+    margin:auto;
+}
+.img-right span{
+    text-align: center;
+    display: block;
+}
+.img-right span a{
+    width: 100%;
+}
+.weui-picker-container{
+    bottom: 2.7rem;
+}
+</style>
+<script>
+    $(function(){
+
+        $("#error_type").select({
+            title: "选择错误类型",
+            items: [ {
+                title: "图片不是本人",
+                value: "1",
+            }, {
+                title: "闭眼",
+                value: "2",
+            },],
+        });
+        var type='{:input("type")}';
+        type=type==""?1:type;
+        $(".show"+type).show();
+        if(type=='2'){
+            $("#error_type").attr('data-values',2);
+            $("#error_type").val('闭眼');
+        }
+        if(type=='1'){
+            $("#error_type").attr('data-values',1);
+            $("#error_type").val('图片不是本人');
+        }
+
+        $(document).on("click",".patting",function(){
+            var id=$(this).data("id");
+            if(id==1){
+                window.location.href="{:url('index/index/self_patting')}?id=1";
+            }
+            if(id==2){
+                window.location.href="{:url('index/index/appointment')}?id=2";
+            }
+            return false;
+            
+        })
+        $(document).on("click",".type1",function(){
+            var id=$(this).data("id");
+            if(id==1){
+                //认识 跳转页面
+                window.location.href='{:url("exchange")}';
+                return false;
+            }
+            if(id==2){
+                //不认识 不是本人
+                $("#error_type").attr('data-values',1);
+                $("#error_type").val('图片不是本人');
+            }
+            $(".show1").hide();
+            $(".show2").show();
+
+        })
+
+    });
+
+
+</script>
+
+
+{include file="base/foot"/}

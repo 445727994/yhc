@@ -1,0 +1,31 @@
+{include file="base/head"/}
+<script src="__WEUI__/js/lrz.min.js"></script>
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+
+<div class="page page-bd">
+    <article class="weui-article">
+        <section>
+            <h2 class="title">预约补拍注意事项</h2>
+            <section>
+                <p>拍摄着装：最好准备正装，请保证妆容整洁，不要化浓妆，因拍摄背景为蓝色，请避免穿着蓝色衣服。 <br>
+                营业时间：周一至周五，早9：30至下午18：00。节假日以通知为准。</p>
+                <br> 
+                <p >补拍地址：河南省郑州市郑东新区龙子湖高校区汇艺悦公馆11楼1102号<br>地铁：地铁1号线 龙子湖站出站向西700米处路北<br>
+                公交：（278路公交站）平安大道湖心环路站下车向西200米处路北。</p>
+                <br>
+                <p >请提前一到两个工作日预约</p>
+
+            </section>
+        </section>
+    </article>
+    <div class="weui-btn-area margin15" >
+        <a class="weui-btn weui-btn_primary"  lay-submit="edit" lay-filter="edit" href="{:url('appointment')}?confirm=1&type={:input('type')}" id="confirm">预约</a>
+    </div>
+</div>
+
+
+{include file="base/foot"/}

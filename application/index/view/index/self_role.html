@@ -1,0 +1,27 @@
+{include file="base/head"/}
+
+
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<div class="page page-bd">
+    <div class="weui-msg"  id="s2">
+        <div class="weui-msg__icon-area"><i class="weui-icon-warn  weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">操作失败</h2>
+            <p class="weui-msg__desc">{$msg}</p>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="javascript:;" onclick="window.history.back(-1)" class="weui-btn weui-btn_primary">返回上一页</a>
+               <!-- <a href="javascript:;" class="weui-btn weui-btn_default">辅助操作</a>-->
+            </p>
+        </div>
+        <div class="weui-msg__extra-area">
+
+        </div>
+    </div>
+</div>
+{include file="base/foot"/}

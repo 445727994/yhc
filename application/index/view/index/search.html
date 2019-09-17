@@ -1,0 +1,74 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<style type="text/css">
+h2{
+ padding-top: .5rem;
+}
+.weui-c-content{
+    margin: .7rem;
+}
+th{
+    background-color: #ada6a621;
+}
+</style>
+<div class="page page-bd">
+    <div class="weui-c-content">
+        {if $pic}
+        {if $pic['type']==1}
+        <!-- 1自行补拍 -->
+        <h2 class="weui-c-title tcenter">自行补拍</h2>
+        <table>
+            <thead>
+                <tr><th style="width: 90px;">提交时间</th><th>状态</th> {if $pic.status==9} <th>错误</th>{/if}</tr>
+            </thead>
+            <tbody>
+                <tr><td title="预约时间">{$pic.update_time|date="Y-m-d H:i"}</td><td title="状态">{$pic.status|get_status}</td>
+                {if $pic.status==9}    <td title="备注">{$pic.note}</td> {/if}
+                </tr>
+                 {if $pic.status==9}  
+                <tr>
+                    <td colspan="3">
+                        <div class="weui-btn-area weui-cells" style="margin: .7rem">
+                            <a class="weui-btn weui-btn_primary" lay-submit="edit" lay-filter="edit" href="{:url('reupload')}" id="btn">重新上传</a>
+                        </div>
+                    </td>
+                </tr>
+                {/if}
+            </tbody>
+        </table>
+        
+        {else/}
+        <!-- 预约补拍 -->
+        <h2 class="weui-c-title tcenter">我的预约</h2>
+        <table>
+            <thead>
+                <tr><th style="width: 90px;">预约时间</th><th>手机</th><th>备注</th><th>状态</th></tr>
+            </thead>
+            <tbody>
+                <tr><td title="预约时间">{$pic.appoint_time|date="Y-m-d H:i"}</td><td title="手机">{$pic.mobile}</td><td title="备注">{$pic.note}</td><td title="状态">{$pic.status|get_status}</td></tr>
+            </tbody>
+        </table>
+        {/if}
+        {/if}
+        {if $change}
+
+        <h2 class="weui-c-title tcenter">图像交换</h2>
+        <table>
+            <thead>
+                <tr><th style="width: 90px;">提交时间</th><th>状态</th></tr>
+            </thead>
+            <tbody>
+              {volist name='change' id='c'}
+              <tr><td title="提交时间">{$c.update_time|date="Y-m-d H:i"}</td><td title="状态">{$c.status|change_status}</td></tr>
+              {/volist}
+          </tbody>
+      </table>
+      {/if}
+  </div>
+
+</div>
+{include file="base/foot"/}

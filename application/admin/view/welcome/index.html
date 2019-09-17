@@ -1,0 +1,133 @@
+{include file="base/head"/}
+<body>
+  <style type="text/css">
+  .container .list_icon {
+    height: 45px;
+    margin-left:1rem; 
+    float: left;
+  }
+  .container .list_icon i {
+    display: block;
+    color: rgb(255, 255, 255);
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    margin-top: 7px;
+    cursor: pointer;
+    background: url(xadmin.css) 0px 0px no-repeat rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+</style>
+<!-- 顶部开始 -->
+<div class="container">
+  <div class="logo"><a href="./index.html">{$web.title}</a></div>
+  <div class="left_open">
+    <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+  </div>
+  <div class="list_icon" id='clear'>
+    <i title="清除缓存" class="iconfont">&#xe6aa;</i>
+  </div>
+  <div class="list_icon" id='auto'>
+    <i title="自动分配照片" class="iconfont">&#xe60e;</i>
+  </div>
+  <ul class="layui-nav right" lay-filter="">
+    <li class="layui-nav-item">
+      <a href="javascript:;">admin</a>
+      <dl class="layui-nav-child"> <!-- 二级菜单 -->
+      
+  <!--        <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+          <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+        -->
+        <dd><a href="{:url('login/logout')}">退出</a></dd>
+      </dl>
+    </li>
+    <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+  </ul>
+</div>
+<div class="left-nav">
+  <div id="side-nav">
+    <ul id="nav">
+      {volist name='list_menu' id='v'}
+      <li>
+        <a href="{notempty name='v.url'}{$v.url}{else/}javascript:;{/notempty}">
+          <i class="iconfont">&#xe6b4;</i>
+          <cite>{$v.title}</cite>
+          <i class="iconfont nav_right">&#xe697;</i>
+        </a>
+        {notempty name='v.children'}
+        <ul class="sub-menu">
+          {volist name='v.children' id='vc'}
+          <li>
+            <a _href="{notempty name='vc.url'}{$vc.url}{else/}javascript:;{/notempty}">
+              <i class="iconfont">&#xe6a7;</i>
+              <cite>{$vc.title} {if $vc.id eq 33} <span class="layui-badge">{$change}</span> {/if}{notempty name='vc.children'}<span class="layui-badge">{$count}</span>{/notempty}</cite>
+            </a>
+            {notempty name='vc.children'}
+            <ul class="sub-menu">
+              {volist name='vc.children' id='c' key='k'}
+              <li>
+                <a _href="{notempty name='c.url'}{$c.url}{else/}javascript:;{/notempty}">
+                  <i class="iconfont">&#xe6b4;</i>
+                  <cite>{$c.title}<span class="layui-badge">{$num[$k-1]}</span></cite>
+                </a>
+              </li>
+              {/volist}
+            </ul>
+            {/notempty}
+          </li>
+          {/volist}
+        </ul>
+        {/notempty}
+      </li>
+      {/volist}
+    </ul>
+  </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+  <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+    <ul class="layui-tab-title">
+      <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+    </ul>
+    <div class="layui-tab-content">
+      <div class="layui-tab-item layui-show">
+        <iframe src='./welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-content-bg"></div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+  <div class="copyright">Copyright ©2017 yhc  All Rights Reserved</div>  
+</div>
+</body>
+<script type="text/javascript">
+  $("#clear").click(function(){
+   ajaxYhc('POST','{:url("base/clear")}',{},
+    function(result){
+      console.log(result);
+      if(result.code==0){
+        layer.msg(result.msg);
+        setTimeout('location.href="{:url(\'index\')}";',1500);
+      }else{
+        layer.msg(result.msg);
+      }
+      ;
+    },
+    function(result){
+      console.log(result);
+      layer.msg(result.msg);
+    });
+ })
+    $("#auto").click(function(){
+  window.open("{:url('task/auto')}");
+ })
+</script>
+{include file="base/foot"/}

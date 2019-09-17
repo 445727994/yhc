@@ -1,0 +1,119 @@
+{include file="base/edithead"/}
+<div class="layui-form-item">
+    <label class="layui-form-label">院校名称</label>
+    <div class="layui-input-block">
+        <input type="input" name="schoolname" class="layui-input" lay-verify="require"  value="{$info.schoolname}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院校代码</label>
+    <div class="layui-input-block">
+        <input type="input" name="schoolcode" class="layui-input" lay-verify=""  value="{$info.schoolcode}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院系名称</label>
+    <div class="layui-input-block">
+        <input type="input" name="departmentname" class="layui-input" lay-verify=""  value="{$info.departmentname}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">班级</label>
+    <div class="layui-input-block">
+        <input type="input" name="class" class="layui-input" lay-verify=""  value="{$info.class}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">班级负责人1</label>
+    <div class="layui-input-block">
+        <input type="input" name="monitor1" class="layui-input" lay-verify=""  value="{$info.monitor1}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-block">
+        <input type="input" name="mobile1" class="layui-input" lay-verify=""  value="{$info.mobile1}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">班级负责人2</label>
+    <div class="layui-input-block">
+        <input type="input" name="monitor2" class="layui-input" lay-verify=""  value="{$info.monitor2}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-block">
+        <input type="input" name="mobile2" class="layui-input" lay-verify=""  value="{$info.mobile2}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">拍照人数</label>
+    <div class="layui-input-block">
+        <input type="input" name="ps_num" class="layui-input" lay-verify="require"  value="{$info.ps_num}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">缴费金额</label>
+    <div class="layui-input-block">
+        <input type="input" name="money" class="layui-input" lay-verify="require"  value="{$info.money}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+        <input type="input" name="remark" class="layui-input" lay-verify=""  value="{$info.remark}">
+    </div>
+</div>
+<!--固定提交button -->
+<input  name="id" value="{$info.id}" hidden>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="edit" lay-filter="edit">立即提交</button>
+        <a href="{:url('index')}"><button type="button"  class="layui-btn layui-btn-primary">返回</button></a>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form,
+        layer = layui.layer,
+        layedit = layui.layedit
+        //创建一个编辑器    
+        //自定义验证规则
+        form.verify({
+            title: function(value) {
+                if(value=="") {
+                    return '页面title不能为空';
+                }
+            },
+            url: function(value) {
+                if(value=="") {
+                    return 'url路径不能为空';
+                }
+            },
+            //!$verify!  验证部分  做好替换即可
+            //!$post! 提交部分  做好替换即可
+            //!$tablfiled! 列表部分 做好
+        });
+        //监听提交 固定提交部分  编辑修改用
+        form.on('submit(edit)', function(data) {
+            ajaxYhc('POST','{:url("edit")}',data.field,
+                function(result){
+                    console.log(result);
+                    if(result.code==0){
+                        layer.msg(result.msg);
+                        setTimeout('location.href="{:url(\'index\')}";',1500);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                    ;
+                },
+                function(result){
+                    console.log(result);
+                    layer.msg(result.msg);
+                });
+            return false;
+        });
+    });
+</script>
+{include file="base/editfoot"/}

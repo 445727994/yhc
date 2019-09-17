@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>微信安全支付</title>
+    <link rel="stylesheet" href="__WECHAT_CSS__/weui.css"/>
+    <link rel="stylesheet" href="__WECHAT_EXAMPLE__/example.css"/>
+   <script type="text/javascript">
+	function okAjax(out_trade_no,ext){
+	     $.ajax({
+            type:"post",
+            url:"",
+            data:{out_trade_no:out_trade_no,ext:ext},
+            dataType:"text",
+            success:function(data){
+              if(data){
+               wx.closeWindow()
+              }
+            },
+            async:false
+          });
+	}
+	//调用微信JS api 支付
+	function jsApiCall()
+	{
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',
+                {$jsApiParameters},
+			function(res){
+			    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+			    	okAjax('{$order_no}','{$order_no}');
+			    }else{
+			        WeixinJSBridge.log(res.err_msg);
+			         // alert('{$order_no}');
+					 alert('支付失败！'+res.err_code+res.err_desc+res.err_msg);
+				 }
+			}
+		);
+	}
+	function callpay()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	}
+	</script>
+</head>
+ <body ontouchstart>
+    <div class="weui_msg">
+        <div class="weui_icon_area"><i class="weui_icon_success weui_icon_msg"></i></div>
+        <div class="weui_text_area">
+            <h2 class="weui_msg_title"><font color="#888">你将为{$order_no}支付{$amount}元</font></h2>
+         </div>
+        </div>
+        <div class="weui_opr_area">
+            <p class="weui_btn_area">
+                <button  type="button" class="weui_btn weui_btn_primary" onclick="callpay()" >立即支付</button>
+                
+                <a href="javascript:;" onclick="wx.closeWindow()" class="weui_btn weui_btn_default">取消</a>
+            </p>
+        </div>
+    </div>
+ <script src="__WECHAT_EXAMPLE__/zepto.min.js"></script>
+ <script src="__WECHAT_EXAMPLE__/router.min.js"></script>
+ <script src="__WECHAT_EXAMPLE__/example.js"></script>
+</body>
+</html>

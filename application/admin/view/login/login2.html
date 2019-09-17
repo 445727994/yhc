@@ -1,0 +1,17 @@
+{include file="base/head"/}
+<body class="login-bg">
+
+</body>
+<script>
+  $(function  () {
+    layui.use('form', function(){
+  var index=    layer.alert('First、:<br>投资者提示<br>我公司发现在最近有一些网站和社交媒体非法地使用富达的公司名称及标志。进行涉嫌欺诈的计划会通过盗用富达名称及产品的方式来增加其可信度。富达致力于维护本公司品牌，并有一套完备的机制用于严密监测盗用公司品牌的活动，并迅速向相关机关举报。我们敬请投资者对此类计划保持高度警惕。', {
+  skin: 'layui-layer-molv' //样式类名
+  ,closeBtn: 0
+}, function(){
+    layer.close(index);
+});
+    });
+  })
+</script>
+{include file="base/foot"/}

@@ -1,0 +1,129 @@
+{include file="base/head"/}
+<script src="__WEUI__/js/lrz.min.js"></script>
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+
+<div class="page page-bd">
+    <div class="weui-cell yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">预约时间：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  name="appoint_time" id="time" placeholder="请填写前来补拍日期" value="" readonly="readonly">
+        </div>
+    </div>
+    <div class="weui-cell yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">姓名：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  placeholder="姓名" value="{$user.user_name}" readonly="readonly">
+        </div>
+    </div>
+    <div class="weui-cell  yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">院校名称：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  placeholder="院校名称"  value="{$user.schoolname}" readonly="readonly" >
+        </div>
+    </div>
+    <div class="weui-cell yhc_middle" >
+        <div class="weui-cell__hd"><label class="weui-label">院(系)部：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  placeholder="院(系)部" value='{$user.departmentname}'  readonly="readonly">
+        </div>
+    </div>
+    <div class="weui-cell yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">班级：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  placeholder="班级" value="{$user.class}"  readonly="readonly">
+        </div>
+    </div>
+    <div class="weui-cell yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">手机号：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" name="mobile" id="mobile" placeholder="手机号,不填则默认为验证时手机号" value="" >
+        </div>
+    </div>
+
+    <div class="weui-cell yhc_middle">
+        <div class="weui-cell__hd"><label class="weui-label">备注：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  name="note" id="note" placeholder="备注" value="" >
+        </div>
+    </div>
+    <div class=" weui-cell yhc_middle" >
+        <div class="weui-cell__hd"><label class="weui-label">邮寄：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  id="need_send" type="text" value=""   placeholder="点击选择是否邮寄">
+        </div>
+    </div>
+      <div class=" weui-cell yhc_middle" >
+        <div class="weui-cell__hd"><label class="weui-label">邮寄地址：</label></div>
+        <div class="weui-cell__bd">
+            <input class="weui-input"  id="addr" name='addr' type="text" value=""   placeholder="选择邮寄请填写">
+        </div>
+    </div>
+</div>
+<div class="page page-bd">
+    <div class="weui-uploader">
+        <div class="weui-btn-area margin15" >
+            <a class="weui-btn weui-btn_primary"  lay-submit="edit" lay-filter="edit" href="javascript:;" id="btn">预约</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#time").datetimePicker({
+        title: '出发时间',
+        min: "{$start}",
+        max: "{$end}",
+        onChange: function (picker, values, displayValues) {
+            console.log(values);
+        }
+    });
+    $("#need_send").select({
+        title: "选择是否邮寄",
+        items: [ {
+            title: "邮寄",
+            value: "1",
+        }, {
+            title: "自取",
+            value: "0",
+        },],
+    });
+    $(document).on("click","#btn",function(){
+        var time=$('#time').val();
+        if(time==""){
+          $.toast("请填写预约时间",'text');
+          return false;
+      }
+      var need_send=$("#need_send").data('values');
+      if(need_send=="" || need_send==undefined){
+        $.toast('请选择是否邮寄','text');
+        return false;
+    }
+      if(need_send==1){
+      	if($('#addr').val()==""){
+         $.toast('请填写邮寄地址','text');
+          return false;
+        }
+      }
+    ajaxYhc('POST','{:url("appointment")}',{mobile:$('#mobile').val(),note:$("#note").val(),'appoint_time':time,type:"{:input('type')}",need_send:need_send,addr:$('#addr').val()},
+      function(result){
+        if(result.msg.status==1){
+            $.alert(result.msg.msg,"{$webconfig['title']}",function(){
+                window.location.href="{:url('search')}";
+            });
+        }
+        if(result.msg.status==2){
+            $.alert(result.msg.msg,"{$webconfig['title']}",function(){
+                window.location.href="{:url('pay')}";
+            });
+        }
+    },
+    function(result){
+        $.toast(result.msg,'text');
+    });
+    return false;
+});
+</script>
+{include file="base/foot"/}

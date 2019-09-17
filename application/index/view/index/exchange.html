@@ -1,0 +1,69 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+  <div class="weui-navbar__item"><!-- tab-green -->
+   {notempty name='title'}{$title}{/notempty}
+ </div>
+</div>
+<div class="page page-bd">
+
+  <div class="weui-cells_form" >
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">身份证号码</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input"  id="usercard" placeholder="请输入身份证号码" >
+      </div>
+    </div>
+           <div class="weui-msg__text-area">
+          
+            <p class="weui-msg__desc">{$msg.card_remind}		<br></p>
+        </div>
+     <div class="weui-cell"></div>
+    <div class="weui-btn-area weui-cells">
+      <a class="weui-btn weui-btn_primary" lay-submit="edit" lay-filter="edit" href="javascript:" id="btn">提交信息</a>
+    </div>
+  </div>
+
+</div>
+<style>
+p{
+  font-size: .8rem;
+  line-height: 1.4rem;
+  white-space:pre-line;
+}
+.weui-c-article{
+  border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
+  padding: .5rem;
+}
+.weui-c-title{
+    font-size: 1rem;
+  margin:.2rem auto;
+}
+</style>
+<script type="text/javascript">
+  $(function(){
+    $(document).on("click","#btn",function(){
+      var usercard=$("#usercard").val();
+      if(usercard==""){
+       $("#usercard").focus();
+       $.toast("请填写身份证",'text');
+       return false;
+     }
+     ajaxYhc('POST','{:url("exchange")}',{usercard:usercard,},
+      function(result){
+        $.alert(result.msg,"{$webconfig['title']}",function(){
+         window.location.href="{:url('index/index/index')}";
+       });
+      },
+      function(result){
+        console.log(result);
+        $.toast(result.msg,'text');
+      });
+     return false;
+   });
+  });
+
+
+</script>
+
+{include file="base/foot"/}

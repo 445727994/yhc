@@ -1,0 +1,88 @@
+{include file="base/head"/}
+
+<style type="text/css">
+
+.weui-content{
+  padding-top: .5rem;
+
+}
+p{
+  font-size: .8rem;
+  line-height: 1.4rem;
+  white-space:pre-line;
+}
+.weui-c-article{
+  border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
+  padding: .5rem;
+}
+.weui-c-title{
+    font-size: 1rem;
+  margin:.2rem auto;
+}
+</style>
+<div class="weui-navbar">
+  <div class="weui-navbar__item">
+    {$title}
+  </div>
+</div>
+<div class="page page-bd">
+  <div class="weui-content">
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">个人拍照信息查看说明</h2>
+      <div class="weui-c-article">
+        <p>{$msg.web_show}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">缴费说明</h2>
+      <div class="weui-c-article">
+        <p>{$msg.pay_show}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">照片勘误</h2>
+      <div class="weui-c-article">
+        <p>{$msg.correct_errors}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">照片说明</h2>
+      <div class="weui-c-article">
+        <p>{$msg.img_show}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">拍照要求</h2>
+      <div class="weui-c-article">
+        <p>{$msg.photo_require}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">照明光线要求</h2>
+      <div class="weui-c-article">
+        <p>{$msg.light_require}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">数字化图像文件要求</h2>
+      <div class="weui-c-article">
+        <p>{$msg.img_require}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">拍摄要求</h2>
+      <div class="weui-c-article">
+        <p>{$msg.shooting_require}</p>
+      </div>
+    </div>
+    <div class="weui-c-content">
+      <h2 class="weui-c-title">补拍地址</h2>
+      <div class="weui-c-article">
+        <p>{$msg.retark_addr}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{include file="base/foot"/}

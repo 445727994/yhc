@@ -1,0 +1,215 @@
+{include file="base/head"/}
+
+{include file="base/tpl"}
+<body>
+  <div class="admin-main">
+    <fieldset class="layui-elem-field">
+      <legend>{$lang.index}</legend>
+      <div class=" demoTable">
+        <div class="layui-inline" style="width: 10px;"></div>
+        <div class="layui-inline">
+          <form class="layui-form layui-col-md12 x-so" id="search_form">
+           <!--     <a href="{:url('add')}"><button class="layui-btn" >{$lang.add}</button></a> -->
+           {empty name='lamg.search_array'}
+           {volist name='lang.search_array' id='sa'}
+           {if  is_array($sa)}
+           {$sa|get_select=$key}
+           {else/}
+           <div class="layui-input-inline">
+            <input class="layui-input" name="{$key}"   placeholder="{$sa}" style="width: 160px;" autocomplete="off">
+          </div>
+          {/if}
+          {/volist}
+          {else/}
+          <div class="layui-input-inline">
+            <input class="layui-input"  name="{$lang.search}"   placeholder="{$lang.search_name}" style="width: 160px;" autocomplete="off">
+          </div>
+          {/empty}
+          <div class="layui-inline" style="width: 10px;"></div>
+          <button class="layui-btn" type="button" data-type="reload">{$operate.search}</button>
+          <div class="layui-inline" style="width: 10px;"></div>
+          
+          <button type="button" class="layui-btn layui-btn-primary" onclick="exportApiDemo()">{$operate.excel1}</button>
+           <div class="layui-inline" style="width: 10px;"></div>
+          <button type="button" class="layui-btn layui-btn-normal" data-type="getCheckData">批量修改状态</button>
+
+        </form>
+      </div>
+    </div>
+  </fieldset>
+</div>
+<table id="demo" lay-filter="test" ></table>
+</body>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">{$operate.edit}</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{$operate.del}</a>
+</script>
+<script>
+   var search_data=$("#search_form").serializeArray();
+  layui.use('table', function() {
+    var table = layui.table ,form = layui.form;
+    table.render({
+      elem: '#demo'
+              //   skin: 'line' //行边框风格
+              /*      ,even: true //开启隔行背景*/
+            ,size: 'sm' //小尺寸的表格
+            ,url:'{:url("appointment/index")}'
+            ,cellMinWidth: 100 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+            //遍历 替换这里
+            {field:'id', title: 'ID', type:'checkbox'},
+            {field:'user_name',  title: '{$lang.field.user_name}'},
+            {field:'usercard',  title: '{$lang.field.usercard}'},
+            {field:'mobile',  title: '{$lang.field.mobile}'},
+            {field:'appoint_time', title: '{$lang.field.appoint_time}',  minWidth: 160},
+            {field:'status',  title: '{$lang.field.status}'},
+            {field:'error_type',  title: '{$lang.field.error_type}'},
+            {field:'need_send',  title: '{$lang.field.need_send}'},
+             {field:'addr', title: '{$lang.field.addr}',  minWidth: 160},
+            {field:'create_time', title: '{$time.create}',  minWidth: 160},
+             {field:'update_time', title: '{$time.update}',  minWidth: 160},
+            {fixed: 'right',align:'center', title:'{$operate.operate}',toolbar: '#barDemo'}
+            ]]
+            ,id: 'tableReload'
+            ,page: {limit:10,limits:[10,30,50,70,90,110,130,150,170,200,250,300,400]}
+            
+     	, where: {search_data}
+             /*   ,initSort: {
+                  field: 'id' //排序字段，对应 cols 设定的各字段名
+                  ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }*/
+              });
+    form.on('switch(is_show)', function(obj){
+      layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+    });
+        table.on('sort(test)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+          table.reload('tableReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                  }
+                });
+        });
+          //监听单元格编辑
+          table.on('edit(test)', function(obj){
+            console.log('a');
+          var value = obj.value //得到修改后的值
+          ,data = obj.data //得到所在行所有键值
+          ,field = obj.field; //得到字段
+          ajaxYhc('POST','{:url("field_edit")}',{id:data.id,field:obj.field,value:value},
+            function(result){
+              console.log(result);
+              if(result.code==0){
+                layer.msg(result.msg);
+                table.reload('tableReload');
+              };
+            },
+            function(result){
+              console.log(result);
+              layer.msg(result.msg);
+            });
+          return false;
+        });
+          //监听工具条
+          table.on('tool(test)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+              x_admin_show('{$operate.view}'+data.username+'的交换申请','{:url("edit")}?id='+data.id,1200,800);
+            } else if(obj.event === 'del'){
+              layer.confirm('{$operate.del_confirm}', function(index){
+                obj.del();
+                ajaxYhc('POST','{:url("del")}',{id:obj.data.id},function(result){layer.msg(result.msg);},function(result){layer.msg(result.msg)});
+                layer.close(index);
+              });
+            } else if(obj.event === 'edit'){
+              window.location.href='{:url("edit")}?id='+data.id
+            }
+          });
+
+          var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+              var checkStatus = table.checkStatus('tableReload')
+              ,data = checkStatus.data;
+              var ids=[];
+              for(var i=0;i<data.length;i++){
+					ids.push(data[i].id);
+				}
+              console.log(ids );
+              var status=$("select[name='a.status']").val();
+            ajaxYhc('POST','{:url("change_status")}',{ids:ids,status:status},function(result){layer.msg(result.msg);       table.reload('tableReload');},function(result){layer.msg(result.msg)});
+            } 
+           , reload: function(){
+             var search_data=$("#search_form").serializeArray();
+             //执行重载
+             table.reload('tableReload', {
+              page: {
+                    curr: 1 //重新从第 1 页开始
+                  }
+                  ,where:{search_data}
+                });
+           }
+          
+          };
+         $('.demoTable .layui-btn').on('click', function(){
+          var type = $(this).data('type');
+          active[type] ? active[type].call(this) : '';
+        });
+       });
+     </script>
+     <script type="text/javascript">
+      layui.config({
+        base: '__STA__layui_exts/'
+      }).extend({
+        excel: 'excel'
+      });
+
+/**
+ * 导出接口数据的样例
+ * @return {[type]} [description]
+ */
+ function exportApiDemo() {
+  var url="{:url('export')}";
+  var search_data=$("#search_form").serializeArray();
+  var urlparam="";
+  for(var j = 0,len = search_data.length; j < len; j++){
+    urlparam+="search_data["+j+"][name]="+search_data[j]['name']+"&";
+    urlparam+="search_data["+j+"][value]="+search_data[j]['value']+"&";
+  }
+  url=url+"?"+urlparam;
+  layui.use(['jquery', 'excel', 'layer'], function() {
+    var $ = layui.jquery;
+    var layer = layui.layer;
+    var excel = layui.excel;
+    // 模拟从后端接口读取需要导出的数据
+    // 
+    ajaxYhc('POST','{:url("export")}',{},
+      function(res){
+        if(res.code==0){
+         var data = res.data;
+        // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+        data = excel.filterExportData(data, {
+          id: 'id',user_name: 'user_name',usercard: 'usercard'
+          ,addr: 'addr',ps_number:'ps_number',schoolname: 'schoolname',departmentname: 'departmentname',class: 'class',major: 'major'
+          ,mobile: 'mobile',appoint_time:'appoint_time',status:'status',error_type:'error_type',need_send: 'need_send',create_time: 'create_time'
+        });
+        // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+        data.unshift({ id: "ID", user_name: "{$lang.field.user_name}", usercard: '{$lang.field.usercard}'
+          ,addr: '{$lang.field.addr}',ps_number:'{$lang.field.ps_number}',schoolname:'{$lang.field.schoolname}'
+          ,departmentname: '{$lang.field.departmentname}',class: '{$lang.field.class}',major: '{$lang.field.major}'
+          ,mobile: '{$lang.field.mobile}',  appoint_time: '{$lang.field.appoint_time}',status: '{$lang.field.status}', error_type: '{$lang.field.error_type}', need_send: '{$lang.field.need_send}', create_time: '{$time.create}' });
+      //  var timestart = Date.now();
+      var colConf = excel.makeColConfig({'A': 120,'B': 120,'C': 120,'D': 120,'E': 120,'F': 120,'G': 120,'I': 120,
+    }, 80);
+      excel.exportExcel({sheet1: data}, $('legend').html()+'.xlsx', 'xlsx', {extend: {'!cols': colConf}});
+    }else{
+      layer.alert("{lang.explode_err}");
+    }
+  },
+  function(result){
+    layer.msg(result.msg);
+  });
+  });
+}
+</script>
+{include file="base/foot"/}

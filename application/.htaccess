@@ -1,0 +1,6 @@
+ data = excel.filterExportData(data,{ps_number:'ps_number',exam_id:'exam_id',study_level:'study_level',study_id:'study_id',user_name:'user_name',sex:'sex',usercard:'usercard',schooldistinction:'schooldistinction',schoolname:'schoolname',schoolcode:'schoolcode',major:'major',departmentname:'departmentname',departmentcode:'departmentcode',class:'class',cj_time:'cj_time',educational_type:'educational_type',batch_id:'batch_id'});
+        // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+        data.unshift({ps_number: "{$lang.field.ps_number}",exam_id: "{$lang.field.exam_id}", study_level: '{$lang.field.study_level}',study_id: '{$lang.field.study_id}'
+          ,user_name: '{$lang.field.user_name}',sex: '{$lang.field.sex}', usercard: '{$lang.field.usercard}',schooldistinction: '{$lang.field.schooldistinction}'
+          ,schoolname: '{$lang.field.schoolname}', schoolcode: '{$lang.field.schoolcode}', major: '{$lang.field.major}',departmentname: '{$lang.field.departmentname}'
+                    ,departmentcode: '{$lang.field.departmentcode}',class: '{$lang.field.class}'},cj_time: '{$lang.field.cj_time}',educational_type:'{$lang.field.educational_type}',batch_id:'{$lang.field.batch_id}',batchcode:'{$lang.field.batchcode}' });

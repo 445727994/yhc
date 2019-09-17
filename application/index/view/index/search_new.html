@@ -1,0 +1,189 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<style type="text/css">
+h2{
+ padding-top: .5rem;
+}
+.weui-c-content{
+    margin: .7rem;
+}
+th{
+    background-color: #ada6a621;
+}
+.weui-form-preview__bd{
+    font-size: .8rem
+}
+.weui-form-preview__ft{
+    font-size: 1.1rem;
+}
+.weui-form-preview__ft a{
+    margin:auto;
+}
+.red{
+   color:#ce362b;
+}
+</style>
+
+<div class="page page-bd">
+
+    {if $pic}
+    {if $pic['type']==1}
+    <!-- 1自行补拍 -->
+    <div class="weui-form-preview">
+        <div class="weui-form-preview__ft">
+            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">自行补拍</button>
+        </div>
+        <div class="weui-form-preview__bd" >
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">提交时间</label>
+                <span class="weui-form-preview__value">{$pic.update_time|date="Y-m-d H:i"}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">状态</label>
+                <span class="weui-form-preview__value">{$pic.status|get_status}</span>
+            </div>
+            
+            {if $pic.status==9}
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">信息提醒</label>
+                <span class="weui-form-preview__value">{$pic.note}</span>
+            </div>
+			{elseif($pic.status==10)}
+           <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">信息提醒</label>
+                <span class="weui-form-preview__value">{$pic.note}</span>
+            </div>
+            {/if}
+        </div>
+        {if $pic.status==9}
+        <div class="weui-form-preview__ft">
+            <a href="{:url('reupload')}"><button type="button" class="red weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:;">重新上传</button></a>
+        </div>
+        {/if}
+    </div>
+    {else/}
+    <!-- 预约补拍 -->
+    <div class="weui-form-preview">
+        <div class="weui-form-preview__ft">
+            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">我的预约</button>
+        </div>
+        <div class="weui-form-preview__bd" >
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">预约时间</label>
+                <span class="weui-form-preview__value">{$pic.appoint_time|date="Y-m-d H:i"}</span>
+            </div>
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">手机</label>
+                <span class="weui-form-preview__value">{$pic.mobile}</span>
+            </div>
+
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">备注</label>
+                <span class="weui-form-preview__value">{$pic.note}</span>
+            </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">回复信息</label>
+                <span class="weui-form-preview__value">{$pic.response}</span>
+            </div>
+              <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">状态</label>
+                <span class="weui-form-preview__value">{$pic.status|get_status_app}</span>
+            </div>
+        </div>
+    </div>
+    {/if}
+    {/if}
+    {if $change}
+    <!-- 预约补拍 -->
+    <div class="weui-form-preview">
+        <div class="weui-form-preview__ft">
+            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">图像交换</button>
+        </div>
+        {volist name='change' id='c'}
+        <div class="weui-form-preview__bd" >
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">提交时间:</label>
+                <span class="weui-form-preview__value">{$c.update_time|date="Y-m-d H:i"}</span>
+            </div>
+             <div class="weui-form-preview__item" >
+<label class="weui-form-preview__label" style='width:10%;'>发起人（左）:
+<br>交换人（右）:
+               
+               </label>
+                  <img src='{$c.card1|get_img_bycard}?time={:time()}' style='width:35%;display:inline-block'/>
+                  <img src='{$c.card2|get_img_bycard}?time={:time()}'  style='width:35%;display:inline-block'/>
+            </div>
+     
+          
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">状态:</label>
+                <span class="weui-form-preview__value">{$c.status|change_status}</span>
+            </div>
+      
+        
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">注意:</label>
+                <span class="weui-form-preview__value">图片交换提交后待确定待审核时<br>无法进行补拍或预约操作</span>
+            </div>
+                    {if ($c.status==0)}
+            {if ($usercard==$c.card2)}
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label">交换申请:</label>
+                <span class="weui-form-preview__value">{$c.name1}正在申请跟您的照片进行互换</span>
+            </div>
+             <div class="weui-btn-area weui-cells" style="margin: .7rem">
+                          <a class="weui-btn weui-btn_warn confirm_but"  lay-submit="edit" lay-filter="edit" href="javascript:;" data-id='{$c.id}' data-status='-1' data-card='{$c.card2}' id="btn">拒绝交换</a>
+                  
+                     <a class="weui-btn weui-btn_primary confirm_but"  lay-submit="edit" lay-filter="edit" href="javascript:;" data-id='{$c.id}' data-status='2'  data-card='{$c.card2}' id="btn">确定交换</a>
+                        </div>
+     
+            {/if}
+          	{/if}
+
+           
+        </div>
+        {/volist}
+    </div>
+    {/if}
+    {if empty($change)&&empty($pic)}
+    <div class="weui-msg">
+      <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"></i></div>
+      <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">{$msg}</h2>
+    </div>
+</div>
+</div>
+{/if}
+</div>
+{include file="base/foot"/}
+<style type="text/css">
+    .weui-form-preview__bd{
+        text-align: left;
+    }
+</style>
+<script type="text/javascript">
+    $(document).on("click",".confirm_but",function(){
+                var id=$(this).data('id');
+                   var card=$(this).data('card');
+                   var status=$(this).data('status');
+                   var msg=status=="-1"?'拒绝':'同意';
+    $.confirm("确定"+msg+"吗?", "确认?", function() {
+        ajaxYhc('POST','{:url("change_confirm")}',{id:id,card:card,status:status},
+            function(result){
+               $.alert(result.msg,"{$webconfig['title']}",function(){
+                window.location.href="{:url('search')}";
+            });
+           },
+           function(result){
+            $.toast(result.msg,'text');
+        });
+        return false;
+    }, function() {
+
+    });
+})
+</script>

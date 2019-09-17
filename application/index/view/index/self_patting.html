@@ -1,0 +1,143 @@
+{include file="base/head"/}
+<script src="__WEUI__/js/lrz.min.js"></script>
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+
+<div class="page page-bd">
+    <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+            <p class="weui-uploader__title" id="title" style="text-align: center;">样图</p><br>
+        </div>
+        <div class="weui-uploader__hd">
+            <img src="/schoolimg/example.jpg" id="img" alt="" style="width:60%;margin: auto;"> 
+        </div>
+        <div class="weui-uploader__bd" style="margin: auto;text-align: center;">
+            <ul class="weui-uploader__files">
+            </ul>
+            <div class="weui-uploader__input-box"  style="margin: auto;text-align: center;float:none;margin-top: .5rem">
+                <input class="weui-uploader__input" accept="image/*"  type="file"  onchange="previewImage(this)">
+            </div>
+            <input value="" id="file"  type="hidden"  name="img" />
+        </div>
+        <div class="weui-btn-area " style="padding: .5rem 0;">
+            <input class="weui-input border" style="text-align: center;height: 1.8rem;border-radius: 1rem;" id="need_send" type="text" value=""   placeholder="点击选择是否邮寄">
+        </div>
+
+        <div class="weui-btn-area margin15" >
+            <a class="weui-btn weui-btn_primary" lay-submit="edit" lay-filter="edit" href="javascript:" id="confirm">提交照片</a>
+        </div>
+        <article class="weui-article">
+            <section>
+                <h2 class="title">上传要求</h2>
+                <section>
+                    <b class="f-red">一、请严格按照以下要求到照像馆进行拍摄，不可使用手机拍摄（系统将会检测），如未按要求上传将审核不通过,请参考上方样图.</b>
+                    <br> 
+                    1、上传图片为腰部以上<span class="f-red">半身照</span>，文件格式为<span class="f-red">JPG</span>、背景：<span class="f-red">蓝色</span>。必须上传原图，<span class="f-red">不得使用ps、美图秀秀进行后期处理，如违反则审核不通过</span>。<br>
+                    2、图片大小：小于<span class="f-red">3M大于1M</span>。<br>
+                    3、佩饰及遮挡物: <span class="f-red">不得使用头部覆盖物</span>(宗教、医疗和文化需要时，<span class="f-red">不得遮挡脸部</span>或造成阴影)。<span class="f-red">不得佩戴耳环、项链</span>等饰品。<span class="f-red">头发不得遮挡眉毛、眼睛和耳朵。不宜化妆</span>。<br>
+                    4、人物姿态与表情: 坐姿端正，表情自然，双眼自然睁开并平视，耳朵对称，左右肩膀平衡，嘴唇自然闭合。<br>
+                    5、<span class="f-red">不得戴有色(含隐形) 眼镜，镜框不得遮挡眼睛，眼镜不能有反光</span>。<br>
+                </section>
+            </section>
+        </article>
+    </div>
+</div>
+<script>
+    function removeimg(obj){
+        $.confirm('您确定要删除吗?', '确认删除?', function() {$(obj).remove();});
+        return false;
+    }       
+    $("#need_send").select({
+        title: "选择是否邮寄",
+        items: [ {
+            title: "邮寄",
+            value: "1",
+        }, {
+            title: "自取",
+            value: "0",
+        },],
+    });
+    $(document).on("click","#confirm",function(){
+       var need_send=$("#need_send").data('values');
+       var img=$('#file').val();
+       if(img=="" || img=="/schoolimg/example.jpg"){
+        $.toast('请上传照片','text');
+        return false;
+    }
+    if(need_send=="" || need_send==undefined){
+        $.toast('请选择是否邮寄','text');
+        return false;
+    }
+    $.confirm("确定提交照片吗?", "确认?", function() {
+        console.log(img+need_send+"{:input('type')}");
+        ajaxYhc('POST','{:url("self_patting")}',{img:img,need_send:need_send,type:"{:input('type')}"},
+            function(result){
+
+                if(result.msg.status==1){
+                    $.alert(result.msg.msg,"{$webconfig['title']}",function(){
+                        window.location.href="{:url('search')}";
+                    });
+                }
+                if(result.msg.status==2){
+                    $.alert(result.msg.msg,"{$webconfig['title']}",function(){
+                        window.location.href="{:url('pay')}";
+                    });
+                }
+
+            },
+            function(result){
+                $.toast(result.msg,'text');
+            });
+        return false;
+    }, function() {
+
+    });
+})
+  
+
+  
+    function previewImage(file) {
+     var MAXWIDTH = 1000;
+     var MAXHEIGHT = 1200;
+     if (file.files && file.files[0]) {
+         var reader = new FileReader();
+         reader.onload = function (evt) {
+            var extend = file.files[0].name.substring(file.files[0].name.lastIndexOf(".") + 1)
+            var size=file.files[0]['size'];
+            var minsize=parseInt("{$webconfig.min_size}")*1024;
+            var maxsize=parseInt("{$webconfig.max_size}")*1024;
+            var filesize=file.files[0]['size']/1024;//kb
+            if(extend!='JPG' && extend !='jpg' && extend !='jpeg' && extend !='JPEG'){
+              $.toast('图片必须为jpg格式','text');
+          }
+          if(filesize>maxsize){
+             $.toast('图片大小最大上传{$webconfig.max_size}M','text');
+             return false;
+         }
+
+         if(filesize<minsize){
+             $.toast('图片大小最小上传{$webconfig.min_size}M','text');
+             return false;
+         }
+         $.post("{:url('upload')}",{imgbase64: evt.target.result},function(rs){
+            console.log(rs);
+            $.toast(rs.msg,'text');
+            if(rs.code==0){
+                $('#img').attr('src',evt.target.result);
+                $('#title').html('上传预览图');
+                $('#file').val(rs.src);
+            }
+
+        },'json');
+     };
+     reader.readAsDataURL(file.files[0]);
+     console.log(file.files[0]);
+ }
+}
+
+</script>
+
+{include file="base/foot"/}

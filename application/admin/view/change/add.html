@@ -1,0 +1,123 @@
+{include file="base/addhead"/}
+<div class="layui-form-item">
+<label class="layui-form-label">交换发起人</label>
+<div class="layui-input-block">
+<input type="input" name="name1" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">被交换人</label>
+<div class="layui-input-block">
+<input type="input" name="name2" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">交换发起人身份证</label>
+<div class="layui-input-block">
+<input type="input" name="card1" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">被交换人身份证</label>
+<div class="layui-input-block">
+<input type="input" name="card2" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">学生姓名</label>
+<div class="layui-input-block">
+<input type="input" name="uniqid1" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">学生姓名</label>
+<div class="layui-input-block">
+<input type="input" name="uniqid2" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">状态</label>
+<div class="layui-input-block">
+<select name="status" lay-verify="" >
+<option value="0" {if($info["status"] = "0")} selected{/if}   >待审核</option>
+<option value="1" {if($info["status"] = "1")} selected{/if}   >审核通过</option>
+<option value="2" {if($info["status"] = "2")} selected{/if}   >审核不通过</option>
+<option value="3" {if($info["status"] = "3")} selected{/if}   >被交换人照片不存在</option>
+</select>
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">交换发起人学校</label>
+<div class="layui-input-block">
+<input type="input" name="school1" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">被交换人学校</label>
+<div class="layui-input-block">
+<input type="input" name="school2" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">交换发起人班级</label>
+<div class="layui-input-block">
+<input type="input" name="class1" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<div class="layui-form-item">
+<label class="layui-form-label">被交换人班级</label>
+<div class="layui-input-block">
+<input type="input" name="class2" class="layui-input" lay-verify="require"  value="">
+</div>
+</div>
+<!--固定提交button -->
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="add" lay-filter="add">立即提交</button>
+        <a href="{:url('index')}"><button type="button"  class="layui-btn layui-btn-primary">返回</button></a>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form,
+        layer = layui.layer,
+        layedit = layui.layedit
+        //创建一个编辑器    
+        //自定义验证规则
+        form.verify({
+            title: function(value) {
+                if(value=="") {
+                    return '页面title不能为空';
+                }
+            },
+            url: function(value) {
+                if(value=="") {
+                    return 'url路径不能为空';
+                }
+            },
+            //!$verify!  验证部分  做好替换即可
+            //!$post! 提交部分  做好替换即可
+            //!$tablfiled! 列表部分 做好
+        });
+        //监听提交 固定提交部分  编辑修改用
+        form.on('submit(add)', function(data) {
+            ajaxYhc('POST','{:url("add")}',data.field,
+                function(result){
+                    console.log(result);
+                    if(result.code==0){
+                        layer.msg(result.msg);
+                        setTimeout('location.href="{:url(\'index\')}";',1500);
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                    ;
+                },
+                function(result){
+                    console.log(result);
+                    layer.msg(result.msg);
+                });
+            return false;
+        });
+    });
+</script>
+{include file="base/addfoot"/}

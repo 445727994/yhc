@@ -1,0 +1,199 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+    <div class="weui-navbar__item">
+        {$title}
+    </div>
+</div>
+<div class="page page-bd">
+    <div class=" weui-cells_form">
+        <div class="weui-cell  yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">院校名称：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院校名称"  value="{$user.schoolname}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">院校代码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院校代码"  value="{$user.schoolcode}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle" >
+            <div class="weui-cell__hd"><label class="weui-label">院(系)部：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="院(系)部" value='{$user.departmentname}' >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">班级：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="班级" value="{$user.class}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">姓名：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="姓名" value="{$user.user_name}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">性别：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="性别" value="{$user.sex=1?'男':'女'}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">身份证号码：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="身份证号码" value="{$user.usercard}" >
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">学号：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="学号"  value="{$user.study_id}">
+            </div>
+        </div>
+        <div class="weui-cell yhc_middle">
+            <div class="weui-cell__hd"><label class="weui-label">学历层次：</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input"  placeholder="学历层次" value="{$user.study_level}" >
+            </div>
+        </div>
+        {if !empty($user["ps_number"])}
+              {if $user["userimg"]!=false}
+              <div class="weui-cell" >
+                        {if $user['is_confirm']==1}
+                        <div class="weui-mark-img" style="width: 80%;min-height:3rem;margin: auto;">
+                            <img src='{:get_img($user)}?time={:time()}' style="width: 100%;min-height:3rem;margin: auto; " />
+                        </div>
+                        <div class="weui-mark-vip" style="left: 10%;"><span class="weui-mark-lt bg-orange">已确认</span></div>
+                        {else/}
+                        <div class="weui-mark-img" style="width: 80%;min-height:3rem;margin: auto;">
+                            <img src='{:get_img($user)}?time={:time()}' style="width: 100%;min-height:3rem;margin: auto; " />
+                        </div>
+                        <div class="weui-mark-vip" style="left: 10%;"><span class="weui-mark-lt bg-orange">错误图像</span></div>
+                    </div>
+                    <div class="weui-btn-area show1" style="margin-top: 0rem">
+                        <p class="weui-footer__text f25" style="margin: auto;margin-bottom: .5rem;text-align: center;" >是否认识照片中的人</p>
+                        <a class="weui-btn weui-btn_primary weui-btn_warn type1" data-id='1'  href="javascript:">认识</a>
+
+                        <a class="weui-btn weui-btn_primary weui-btn_warn type1" data-id='2'  href="javascript:" >不认识</a>
+                    </div>
+
+                    <div class="weui-cell show2" style="padding: .5rem 0;">
+                        <input class="weui-input border" style="text-align: center;height: 1.8rem;border-radius: 1rem;" id="error_type" type="text" value=""   placeholder="点击选择错误类型">
+                    </div>
+                    <div class="weui-btn-area show2" style="margin-top: 0rem">
+                        <a class="weui-btn weui-btn_primary weui-btn_warn patting" data-id='1' href="javascript:">自行补拍</a>  
+                        <a class="weui-btn weui-btn_primary weui-btn_warn patting" data-id='2'  href="javascript:" >预约补拍</a>
+                    </div>
+                            {/if}
+              {else/}
+              <div class="weui-cell">
+              </div>
+              <div class="weui-footer f-red">
+                  <p class="weui-footer__text f25" style="margin: auto" >{$webconfig['ps_no']}</p>
+              </div>
+              {/if}
+        {else/}
+       <div class="weui-cell">
+        </div>
+        <div class="weui-footer f-red">
+            <p class="weui-footer__text f25" style="margin: auto" >您未参加集中信息采集</p>
+        </div>
+      	<div class="weui-btn-area weui-cells" style="margin: .7rem">
+			<a class="weui-btn weui-btn_primary" lay-submit="edit" lay-filter="edit" href="{:url('retarking')}" id="btn">照片补拍</a>
+		</div>
+        {/if}
+    </div>
+</div>
+<style type="text/css">
+.show1,.show2{
+    display: none;
+}
+.img-right{
+    line-height: 1.9rem;
+}
+.yhc_middle{
+    width: 60%;
+    min-width: 286px;
+    margin:auto;
+}
+.img-right span{
+    text-align: center;
+    display: block;
+}
+.img-right span a{
+    width: 100%;
+}
+.weui-picker-container{
+    bottom: 2.7rem;
+}
+</style>
+<script>
+    $(function(){
+
+        $("#error_type").select({
+            title: "选择错误类型",
+            items: [ {
+                title: "图片不是本人",
+                value: "1",
+            }, {
+                title: "闭眼",
+                value: "2",
+            },],
+        });
+        var type='{:input("type")}';
+        type=type==""?1:type;
+        $(".show"+type).show();
+        if(type=='2'){
+            $("#error_type").attr('data-values',2);
+            $("#error_type").val('闭眼');
+        }
+        if(type=='1'){
+            $("#error_type").attr('data-values',1);
+            $("#error_type").val('图片不是本人');
+        }
+
+        $(document).on("click",".patting",function(){
+            var error_type=$("#error_type").data('values');
+            var id=$(this).data("id");
+            if(error_type!=1&&error_type!=2){
+                $.toast('请选择错误类型','text');
+                 return false;
+            }
+            if(id==1){
+                window.location.href="{:url('index/index/self_patting')}?id=1&type="+error_type;
+            }
+            if(id==2){
+                window.location.href="{:url('index/index/appointment')}?id=2&type="+error_type;
+            }
+            return false;
+            
+        })
+        $(document).on("click",".type1",function(){
+
+            var id=$(this).data("id");
+            if(id==1){
+                //认识 跳转页面
+                window.location.href='{:url("exchange")}';
+                return false;
+            }
+            if(id==2){
+                //不认识 不是本人
+                $("#error_type").attr('data-values',1);
+                $("#error_type").val('图片不是本人');
+            }
+            $(".show1").hide();
+            $(".show2").show();
+
+        })
+
+    });
+
+
+</script>
+
+
+{include file="base/foot"/}

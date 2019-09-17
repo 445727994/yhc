@@ -1,0 +1,77 @@
+{include file="base/head"/}
+<div class="weui-navbar">
+  <div class="weui-navbar__item"><!-- tab-green -->
+   {notempty name='title'}{$title}{/notempty}
+ </div>
+</div>
+<div class="page page-bd">
+
+  <div class="weui-cells_form" >
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" id="user" placeholder="请输入姓名"  >
+      </div>
+    </div>
+   
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">身份证号码</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input"  id="usercard" placeholder="请输入身份证号码" >
+      </div>
+    </div>
+     <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">手机号码</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" id="mobile" pattern="[0-11]*" placeholder="请输入手机号码" type="number" >
+      </div>
+    </div>
+    <div class="weui-btn-area weui-cells">
+      <a class="weui-btn weui-btn_primary" lay-submit="edit" lay-filter="edit" href="javascript:" id="btn">提交信息</a>
+    </div>
+  </div>
+  <input type="text" name="microtime" id="microtime" value="{$microtime}" hidden="hidden">
+  <input type="text" name="token" id='token' value="{$token}" hidden="hidden">
+  <input type="text" name="rand_num" id="rand_num" value="{$rand_num}" hidden="hidden">
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $(document).on("click","#btn",function(){
+      var user = $("#user").val();
+      var mobile=$("#mobile").val();
+      var usercard=$("#usercard").val();
+      if(user==""){
+       $("#user").focus();
+       $.toast("请填写姓名",'text');
+       return false;
+     }
+     var reg =/^1[3|4|5|7|8]\d{9}$/;
+     if(!reg.test(mobile)){
+      $("#mobile").focus();
+      $.toast("手机号码填写错误",'text');
+      return false;
+    }
+    if(user=="usercard"){
+     $("#usercard").focus();
+     $.toast("请填写身份证",'text');
+     return false;
+   }
+   ajaxYhc('POST','{:url("binding")}',{user:user,mobile:mobile,usercard:usercard,microtime:$('#microtime').val(),token:$('#token').val(),rand_num:$('#rand_num').val(),},
+    function(result){
+        $.alert(result.msg,"{$webconfig['title']}",function(){
+         window.location.href="{:url('index/index/index')}";
+       });
+    },
+    function(result){
+      console.log(result);
+      $.toast(result.msg,'text');
+    });
+   return false;
+ });
+  });
+
+
+</script>
+
+{include file="base/foot"/}

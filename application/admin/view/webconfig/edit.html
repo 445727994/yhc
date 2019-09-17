@@ -1,0 +1,144 @@
+{include file="base/edithead"/}
+<div class="layui-form-item">
+    <label class="layui-form-label">网站名称</label>
+    <div class="layui-input-block">
+        <input type="input" name="title" class="layui-input" lay-verify="require"  value="{$info.title}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">地址</label>
+    <div class="layui-input-block">
+        <input type="input" name="address" class="layui-input" lay-verify=""  value="{$info.address}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">版权</label>
+    <div class="layui-input-block">
+        <input type="input" name="copyright" class="layui-input" lay-verify=""  value="{$info.copyright}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">联系电话</label>
+    <div class="layui-input-block">
+        <input type="input" name="phone" class="layui-input" lay-verify=""  value="{$info.phone}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">联系QQ</label>
+    <div class="layui-input-block">
+        <input type="input" name="qq" class="layui-input" lay-verify=""  value="{$info.qq}">
+    </div>
+</div>
+
+
+
+<div class="layui-form-item">
+    <label class="layui-form-label">最小上传（M）</label>
+    <div class="layui-input-block">
+        <input type="input" name="min_size" class="layui-input" lay-verify=""  value="{$info.min_size}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">最大上传（M）</label>
+    <div class="layui-input-block">
+        <input type="input" name="max_size" class="layui-input" lay-verify=""  value="{$info.max_size}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">默认支付金额</label>
+    <div class="layui-input-block">
+        <input type="input" name="money" class="layui-input" lay-verify=""  value="{$info.money}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">默认邮费金额</label>
+    <div class="layui-input-block">
+        <input type="input" name="money1" class="layui-input" lay-verify=""  value="{$info.money1}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">图片制作中提示</label>
+    <div class="layui-input-block">
+        <input type="input" name="ps_no" class="layui-input" lay-verify=""  value="{$info.ps_no}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">图片交换次数限定</label>
+    <div class="layui-input-block">
+        <input type="input" name="change_times" class="layui-input" lay-verify=""  value="{$info.change_times}">
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">开启重复交换</label>
+    <div class="layui-input-block">
+      <input type="radio" name="is_repeat" value="1" title="是" {if($info["is_repeat"] eq 1)}checked="checked"{/if}  >
+      <input type="radio" name="is_repeat" value="0" title="否" {if($info["is_repeat"] eq 0)}checked="checked"{/if}  >
+    </div>
+  </div>
+<div class="layui-form-item">
+    <label class="layui-form-label">关闭前端</label>
+    <div class="layui-input-block">
+      <input type="radio" name="is_open" value="1" title="是" {if($info["is_open"] eq 1)}checked="checked"{/if}  >
+      <input type="radio" name="is_open" value="0" title="否" {if($info["is_open"] eq 0)}checked="checked"{/if}  >
+    </div>
+  </div>
+<div class="layui-form-item">
+    <label class="layui-form-label">关闭时运行的用户openid英文逗号隔开</label>
+    <div class="layui-input-block">
+        <textarea name="limit_user" placeholder="请输入内容openid,英文逗号隔开" class="layui-textarea">{$info['limit_user']}</textarea>
+    </div>
+</div>
+
+<!--固定提交button -->
+<input  name="id" value="{$info.id}" hidden>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="edit" lay-filter="edit">立即提交</button>
+        <a href="{:url('index')}"><button type="button"  class="layui-btn layui-btn-primary">返回</button></a>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form,
+        layer = layui.layer,
+        layedit = layui.layedit
+        //创建一个编辑器    
+        //自定义验证规则
+        form.verify({
+            title: function(value) {
+                if(value=="") {
+                    return '页面title不能为空';
+                }
+            },
+            url: function(value) {
+                if(value=="") {
+                    return 'url路径不能为空';
+                }
+            },
+            //!$verify!  验证部分  做好替换即可
+            //!$post! 提交部分  做好替换即可
+            //!$tablfiled! 列表部分 做好
+        });
+        //监听提交 固定提交部分  编辑修改用
+        form.on('submit(edit)', function(data) {
+            ajaxYhc('POST','{:url("edit")}',data.field,
+                function(result){
+                    console.log(result);
+                    if(result.code==0){
+                        layer.msg(result.msg);
+                       
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                    ;
+                },
+                function(result){
+                    console.log(result);
+                    layer.msg(result.msg);
+                });
+            return false;
+        });
+    });
+</script>
+{include file="base/editfoot"/}

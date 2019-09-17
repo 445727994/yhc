@@ -1,0 +1,99 @@
+{include file="base/edithead"/}
+<div class="layui-form-item">
+    <label class="layui-form-label">微信昵称</label>
+    <div class="layui-input-block">
+        <input type="input" name="wx_user" class="layui-input" lay-verify="require"  value="{$info.wx_user}">
+    </div>
+</div>
+
+{if isset($info.usercard)}
+<div class="layui-form-item">
+    <label class="layui-form-label">学生姓名</label>
+    <div class="layui-input-block">
+        <input type="input" name="user_name" class="layui-input" lay-verify="require"  value="{$info.user_name}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">身份证</label>
+    <div class="layui-input-block">
+        <input type="input" name="usercard" class="layui-input" lay-verify="require"  value="{$info.usercard}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">拍摄序号</label>
+    <div class="layui-input-block">
+        <input type="input" name="ps_number" class="layui-input" lay-verify="require"  value="{$info.ps_number}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">学历层次</label>
+    <div class="layui-input-block">
+       <input type="input" name="study_level" class="layui-input" value="{$info.study_level}">
+   </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">学号</label>
+    <div class="layui-input-block">
+        <input type="input" name="study_id" class="layui-input" lay-verify="require"  value="{$info.study_id}">
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">性别</label>
+    <div class="layui-input-block">
+        <input type="input"  name="sex" class="layui-input"   value="{$info.sex==1?'男':'女'}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">所在校别</label>
+    <div class="layui-input-block">
+        <input type="input" name="schooldistinction" class="layui-input" lay-verify="require"  value="{$info.schooldistinction}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院校名称</label>
+    <div class="layui-input-block">
+        <input type="input" name="schoolname" class="layui-input" lay-verify="require"  value="{$info.schoolname}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院校代码</label>
+    <div class="layui-input-block">
+        <input type="input" name="schoolcode" class="layui-input" lay-verify=""  value="{$info.schoolcode}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">专业</label>
+    <div class="layui-input-block">
+        <input type="input" name="major" class="layui-input" lay-verify=""  value="{$info.major}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院系名称</label>
+    <div class="layui-input-block">
+        <input type="input" name="departmentname" class="layui-input" lay-verify=""  value="{$info.departmentname}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">院系代码</label>
+    <div class="layui-input-block">
+        <input type="input" name="departmentcode" class="layui-input" lay-verify=""  value="{$info.departmentcode}">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">班级</label>
+    <div class="layui-input-block">
+        <input type="input" name="class" class="layui-input" lay-verify=""  value="{$info.class}">
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-block">
+        <input type="input" name="mobile" class="layui-input" lay-verify=""  value="{$info.mobile}">
+    </div>
+</div>
+{/if}
+<!--固定提交button -->
+<input  name="id" value="{$info.id}" hidden>
+{include file="base/editfoot"/}

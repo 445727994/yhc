@@ -1,0 +1,37 @@
+
+{include file="base/head"/}
+<style type="text/css">
+body{
+	height: auto;
+}
+</style>
+
+<div class="weui-navbar">
+	<div class="weui-navbar__item">
+		{$classname}{$title}
+	</div>
+</div>
+<div class="page page-bd padding5" >
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<p>姓名/学号</p>
+		</div>
+		<div class="weui-cell__ft">序号</div>
+	</div>
+	{volist name='class' id='vo' }
+	<div class="weui-cell">
+
+		<div class="weui-cell__bd">
+			<p>{$vo.user_name}/{$vo.study_id}</p>
+
+		</div>
+		<div class="weui-cell__ft">{$key+1}</div>
+	</div>
+	{/volist}
+
+</article>
+</div>
+
+
+
+{include file="base/foot"/}
